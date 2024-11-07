@@ -52,8 +52,7 @@ def main(input, output: str, width: int):
         stuff = list(range(0, num_recs))
         for L in range(len(stuff) + 1):
             for subset in itertools.combinations(stuff, L):
-                if len(subset):
-                    generate(off_base, on_recs, width, subset, output)
+                generate(off_base, on_recs, width, subset, output)
 
 
 def crop_rec(im: ImageFile, i: int, width: int):
@@ -73,7 +72,10 @@ def generate(
     selected: Tuple[int],
     output_dir: str,
 ):
-    output = os.path.join(output_dir, "_".join(map(str, selected)) + ".png")
+    if len(selected) == 0:
+        output = os.path.join(output_dir, "empty.png")
+    else:
+        output = os.path.join(output_dir, "_".join(map(str, selected)) + ".png")
 
     img = off_base.copy()
     for i in selected:
